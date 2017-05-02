@@ -8,6 +8,7 @@ var {ObjectID} = require('mongodb');
 
 
 var app = express();
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
@@ -44,18 +45,16 @@ app.get('/todos/:id', (req, res)=> {
 
   Todo.findById(id).then((doc)=>{
     if (!doc) {
-      res.status(404).send();
+      return res.status(404).send();
     }
     res.send({doc});
-    
-}).catch((e)=>{
-  res.status(404).send();
-})
-
+  }).catch((e)=>{
+    res.status(404).send();
+  });
 });
 
-app.listen(3000, ()=>{
-  console.log("Started on port 3000");
+app.listen(port, ()=>{
+  console.log(`Started on port ${port}`);
 });
 
 module.exports = {app};
